@@ -15,6 +15,24 @@ output:
 **Curso:** Estructura de datos  
 **Ingeniero:** Fred Torres Cruz
 
+
+
+
+
+
+### **Dedicatoria**
+*Agradecer a mis padres, por sacrificio y su apoyo incondicional.*
+*A mi ingeniero Fred Torres, por su guía y exigencia, que me motivaron a dar lo mejor de mi. A mi mismo, por no rendirme.*
+
+
+
+
+
+
+
+
+
+
 ## 📚 Indice
 
 1. [Introducción](#introducción)
@@ -22,12 +40,11 @@ output:
 3. [Estructuras De Control](#estructuras-de-control)
 4. [Funciones](#funciones)
 5. [Arrays](#arrays)
-6. [Funcion](#funcion)
-7. [Operadores & y *](#operadores-and-asterisco)
-8. [Listas enlazadas](#listas-enlazadas)
-9. [Pilas](#pilas)
-10. [Colas](#colas)
-11. [Recursividad](#recursividad)
+6. [Operadores & y *](#operadores-and-asterisco)
+7. [Listas enlazadas](#listas-enlazadas)
+8. [Pilas](#pilas)
+9.  [Colas](#colas)
+10. [Recursividad](#recursividad)
 
 ## Introducción
 Las estructuras de datos son un modo de representar información en una computadora, aunque además, cuentan con un comportamiento interno. ¿Qué significa? Que se rige por determinadas reglas/restricciones que han sido dadas por la forma en que está construida internamente.
@@ -36,8 +53,9 @@ En el ámbito de la informática, las estructuras de datos son aquellas que nos 
 
 Ya sean las más utilizadas comúnmente - como las variables, arrays, conjuntos o clases- o las diseñadas para un propósito específico -árboles, grafos, tablas, etc.-, una estructura de datos nos permite trabajar en un algo nivel de abstracción almacenando información para luego acceder a ella, modificarla y manipularla.
 
+En resumen, dominar las estructuras de datos es como dominar el lenguaje interno de la computadora. Es el primer paso para convertirte no solo en un programador, sino en un solucionador de problemas.
 ## Operadores
-Los operadores son símbolos especiales que se utilizan para realizar operaciones sobre variables y valores. Estas operaciones pueden ser matemáticas, lógicas, de comparación, de asignación, entre otras. Los operadores permiten construir expresiones que combinan datos y producen nuevos resultados, lo cual es esencial en la resolución de problemas mediante programación.
+Los operadores son **símbolos especiales** que se utilizan para realizar operaciones sobre variables y valores. Estas operaciones pueden ser matemáticas, lógicas, de comparación, de asignación, entre otras. Los operadores permiten construir expresiones que combinan datos y producen nuevos resultados, lo cual es esencial en la resolución de problemas mediante programación.
 
 Por ejemplo, el operador + se usa para sumar dos valores, mientras que el operador == se emplea para comparar si dos expresiones son iguales. Gracias a los operadores, es posible tomar decisiones, repetir instrucciones, realizar cálculos, y controlar el flujo de un programa.
 
@@ -69,7 +87,13 @@ int main() {
 	return 0;
 }
 ```
+### 🤔 **¿Sabías que...?**
+En C++, algunos operadores pueden tener prioridad y asociatividad que afectan cómo se evalúan las expresiones.
 
+Por ejemplo, la multiplicación * tiene mayor prioridad que la suma +, por lo que en la expresión:
+```cpp
+int resultado = 3 + 4 * 5; // resultado es 23, no 35
+```
 ## Estructuras De Control
 Las estructuras de control son bloques de código que permiten modificar el flujo de ejecución de un programa. Es decir, controlan qué instrucciones se ejecutan, cuándo y cuántas veces.
 
@@ -129,6 +153,19 @@ Las estructuras de control son muy importantes en la programación porque nos pe
 * Automatizan procesos repetitivos
 * Hacen el código más eficiente y flexible
 * Forman la base de la lógica algorítmica
+:
+
+### 🤔 **¿Sabías que...?**
+En C++, las estructuras de control if, for y while pueden usarse con sentencias sin llaves cuando solo hay una instrucción.
+
+Por ejemplo, este código es válido:
+```cpp
+if (x > 0)
+    cout << "Positivo" << endl;
+ 
+for (int i = 0; i < 3; i++)
+    cout << i << " ";
+```
 
 ## Funciones
 
@@ -153,7 +190,6 @@ int main() {
 }
 ```
 
-
 ## Arrays
 En programación, un array (también llamado arreglo) es una estructura de datos que permite almacenar múltiples valores del mismo tipo en una sola variable, organizados de forma secuencial en la memoria del computador.
 
@@ -175,35 +211,27 @@ int main() {
     return 0;
 }
 ```
-## Funcion
-##  ¿Qué es una función en C++?
-
-Una **función** en C++ es un bloque de código reutilizable que realiza una tarea específica. Permite **organizar el programa en partes más pequeñas**, facilitando su lectura, mantenimiento y reutilización.
-
-### 📌 Ventajas de usar funciones:
-- Evita repetir código.
-- Mejora la estructura del programa.
-- Permite dividir un problema grande en subproblemas más simples.
-
----
-
-### 🧪 Ejemplo básico de una función en C++
-
+### 🤔 **¿Sabías que...?**
+En C++, los arrays no verifican automáticamente los límites de los índices, por lo que acceder fuera del rango válido puede causar errores o comportamientos inesperados.
+### Por ejemplo:
+```cpp
+int arr[3] = {1, 2, 3};
+cout << arr[5]; // Acceso fuera de rango: comportamiento indefinido
+```
+Para evitar esto, puedes usar la clase std::array (desde C++11), que tiene método .at() que sí verifica límites y lanza excepción si el índice es inválido:
 ```cpp
 #include <iostream>
+#include <array>
 using namespace std;
 
-// Definimos una función que suma dos números
-int sumar(int a, int b) {
-    return a + b;
-}
-
 int main() {
-    int resultado = sumar(5, 3);
-    cout << "La suma es: " << resultado << endl;
+    array<int, 3> arr = {1, 2, 3};
+    cout << arr.at(1) << endl;  // Correcto, imprime 2
+    cout << arr.at(5) << endl;  // Lanza excepción: out_of_range
     return 0;
 }
 ```
+Esto ayuda a hacer tu código más seguro y evitar errores difíciles de detectar.
 
 ## Operadores and asterisco
 En C++, los operadores & (ampersand) y * (asterisco) tienen un uso especial en el manejo de punteros, aunque también se pueden usar en otros contextos. A continuación se explica cada uno:
@@ -287,6 +315,9 @@ El operador -> es una herramienta esencial en C++ para trabajar con punteros a o
 Su uso es fundamental en estructuras de datos dinámicas, como listas enlazadas, árboles o cualquier situación en la que se manipulan objetos a través de punteros. Entender y dominar el operador -> es clave para escribir código más legible, eficiente y orientado a objetos en C++.
 
 ¿Quieres que también redacte una conclusión comparando los operadores . y ->?
+### 🤔 **¿Sabías que...?**
+En C++, el operador -> se utiliza para acceder a miembros de una estructura u objeto mediante un puntero.
+Es equivalente a (*ptr).miembro, pero más limpio y fácil de leer.
 
 ## Listas enlazadas
 Una lista enlazada es una colección de elementos, llamados nodos, donde cada nodo contiene dos partes:
@@ -333,6 +364,11 @@ int main() {
     return 0;
 }
 ```
+### 🤔 **¿Sabías que...?**
+En una lista enlazada, cada nodo contiene un puntero al siguiente nodo, lo que permite que la estructura no necesite memoria contigua como los arrays.
+
+Esto hace que insertar o eliminar elementos sea más eficiente, ya que no se necesita mover todos los elementos como en un array.
+
 ## Pilas
 En C++, una pila (stack en inglés) es una estructura de datos lineal que sigue el principio LIFO (Last In, First Out), es decir, el último elemento que entra es el primero en salir.
 
@@ -529,6 +565,10 @@ int main() {
 ```
 Al desapilar se imprime: 1101
 Nota: El binario se forma desde el último residuo hacia el primero, por eso usamos una pila.
+### 🤔 **¿Sabías que...?**
+Las pilas siguen el principio LIFO (Last In, First Out), lo que significa que el último elemento en entrar es el primero en salir.
+
+En C++, puedes implementar una pila fácilmente usando la clase stack de la STL (Standard Template Library).
 
 ## Cola
 Una cola (queue en inglés) es una estructura de datos lineal que sigue el principio FIFO:
@@ -625,7 +665,10 @@ int main() {
 }
 ```
 Este programa utiliza una cola para almacenar números del 1 al 5. Luego, los extrae uno por uno para sumarlos. Se muestra cómo usar una cola para procesar datos en orden de llegada.
+### 🤔 **¿Sabías que...?**
+Además de las colas normales, en C++ también existen colas de prioridad, que permiten procesar elementos según su prioridad y no en el orden de llegada.
 
+Se implementan con la clase priority_queue de la STL.
 ## Recursividad
 La recursividad es una técnica en la que una función se llama a sí misma para resolver un problema.
 
@@ -684,7 +727,9 @@ int main() {
 Este programa calcula la suma de los números del 1 al n usando recursividad. La función suma(n) se llama a sí misma restando 1 hasta llegar a 0, que es el caso base.
 
 ### Ejemplo (Práctica 2): Secuencia de Fibonacci.
+
 ```cpp
+
 #include <iostream>
 using namespace std;
 
@@ -701,3 +746,13 @@ int main() {
 }
 ```
 Este programa calcula n-ésimo número de la secuencia de Fibonacci usando recursividad. La función ses llama a sí misma sumando lo dos términos anteriores. Tiene dos casos base: fibonacci(o) = 0 y fibonacci(1) = 1.
+
+
+### 🤔 **¿Sabías que...?**
+El famoso problema de las Torres de Hanoi es un clásico que se resuelve elegantemente con recursividad…
+Pero mover todos los discos puede llevar ¡siglos! si hay muchos.
+
+Por ejemplo:
+Si tienes 64 discos, el número mínimo de movimientos es
+2⁶⁴ - 1 = 18,446,744,073,709,551,615
+Si haces un movimiento por segundo, ¡tardarías más de 584 mil millones de años! 🌌
