@@ -18,8 +18,8 @@ cursor.execute("""
 cursor.execute("""
     CREATE TABLE IF NOT EXISTS reuniones (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        fecha TEXT NOT NULL
-        descripcion TEXT       
+        fecha TEXT NOT NULL,  
+        descripcion TEXT     
     )
 """)
 
