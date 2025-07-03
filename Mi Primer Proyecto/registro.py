@@ -13,6 +13,9 @@ def menu():
         print("8. Registrar cobranza")
         print("9. Ver cobranzas registradas")
         print("10. Buscar cobranzas por nombre")
+        print("11. Registrar asistencias por placa")
+        print("12. Ver asistencias por reunión")
+        print("13. Ver asistencias por placa")
         print("0. Salir")
         
 
@@ -38,6 +41,13 @@ def menu():
             ver_cobranzas()
         elif opcion == "10":
             buscar_cobranzas_por_nombre()
+        elif opcion == "11":
+            registrar_asistencias_por_placa()
+        elif opcion == "12":
+            ver_asistencias_por_reunion()
+        elif opcion == "13":
+            ver_asistencias_por_placa()
+
         elif opcion == "0":
             print("👋 Saliendo del programa...")
             break
@@ -213,5 +223,116 @@ def buscar_cobranzas_por_nombre():
     
     conexion.close()
 
+def registrar_asistencias_por_placa():
+    conexion = sqlite3.connect("moto_carga.db")
+    cursor = conexion.cursor()
+
+    # Mostrar reuniones disponibles
+    cursor.execute("SELECT * FROM reuniones ORDER BY fecha DESC")
+    reuniones = cursor.fetchall()
+
+    print("\n--- Reuniones disponibles ---")
+    for reunion in reuniones:
+        print(f"ID: {reunion[0]}, Fecha: {reunion[1]}, Tema: {reunion[2]}")
+    
+    reunion_id = input("Ingrese el ID de la reunión: ")
+
+    # Obtener todas las personas
+    cursor.execute("SELECT id, placa FROM personas")
+    personas = cursor.fetchall()
+
+    print("\n--- Lista de placas registradas ---")
+    for persona in personas:
+        print(f"{persona[1]}")
+
+    print("\n🔴 Ingresa las placas que ASISTIERON (una por línea).")
+    print("🟡 Escribe 'fin' para terminar.\n")
+
+    placas_asistieron = set()
+    while True:
+        placa = input("Placa: ").strip().upper()
+        if placa == "FIN":
+            break
+        placas_asistieron.add(placa)
+
+    # Registrar asistencias
+    for persona_id, placa in personas:
+        asistio = 1 if placa in placas_asistieron else 0
+        cursor.execute("""
+            INSERT INTO asistencias (persona_id, reunion_id, asistio)
+            VALUES (?, ?, ?)
+        """, (persona_id, reunion_id, asistio))
+
+    conexion.commit()
+    conexion.close()
+    print("✅ Asistencias registradas correctamente.")
+
+def ver_asistencias_por_reunion():
+    conexion = sqlite3.connect("moto_carga.db")
+    cursor = conexion.cursor()
+
+    # Mostrar reuniones disponibles
+    cursor.execute("SELECT * FROM reuniones ORDER BY fecha DESC")
+    reuniones = cursor.fetchall()
+
+    print("\n--- Reuniones disponibles ---")
+    for reunion in reuniones:
+        print(f"ID: {reunion[0]}, Fecha: {reunion[1]}, Tema: {reunion[2]}")
+
+    reunion_id = input("Ingrese el ID de la reunión: ")
+
+    # Mostrar asistencias para esa reunión
+    cursor.execute("""
+        SELECT personas.placa, asistencias.asistio
+        FROM asistencias
+        JOIN personas ON asistencias.persona_id = personas.id
+        WHERE asistencias.reunion_id = ?
+        ORDER BY personas.placa
+    """, (reunion_id,))
+    asistencias = cursor.fetchall()
+
+    print(f"\n--- Asistencias para la reunión ID {reunion_id} ---")
+    for placa, asistio in asistencias:
+        estado = "✅ Asistió" if asistio == 1 else "❌ No asistió"
+        print(f"Placa: {placa} - {estado}")
+
+    conexion.close()
+
+def ver_asistencias_por_placa():
+    conexion = sqlite3.connect("moto_carga.db")
+    cursor = conexion.cursor()
+
+    placa = input("Ingrese la placa (ej. 104 R): ").strip().upper()
+
+    cursor.execute("""
+        SELECT personas.id FROM personas WHERE placa = ?
+    """, (placa,))
+    resultado = cursor.fetchone()
+
+    if resultado is None:
+        print("❌ Placa no encontrada.")
+        conexion.close()
+        return
+
+    persona_id = resultado[0]
+
+    cursor.execute("""
+        SELECT reuniones.fecha, reuniones.descripcion, asistencias.asistio
+        FROM asistencias
+        JOIN reuniones ON asistencias.reunion_id = reuniones.id
+        WHERE asistencias.persona_id = ?
+        ORDER BY reuniones.fecha DESC
+    """, (persona_id,))
+    asistencias = cursor.fetchall()
+
+    print(f"\n--- Asistencias para placa {placa} ---")
+    for fecha, descripcion, asistio in asistencias:
+        anio, mes, dia = fecha.split('-')
+        fecha_formateada = f"{dia}-{mes}-{anio}"
+        estado = "✅ Asistió" if asistio == 1 else "❌ No asistió"
+        print(f"Fecha: {fecha_formateada} | Tema: {descripcion} | {estado}")
+
+    conexion.close()
+    
 # Iniciar el menú
 menu()
